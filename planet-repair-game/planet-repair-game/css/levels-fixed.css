@@ -1,0 +1,291 @@
+/*
+ * 关卡选择页面样式 - 统一750×1334架构
+ * 移除所有旧的响应式代码，统一使用base.js缩放管理器
+ */
+
+/* 游戏主容器 - 统一750×1334逻辑坐标系 */
+.game-container {
+    /* base.css会自动设置尺寸，这里不重复定义 */
+    background-color: #252429;
+}
+
+/* 关卡容器 */
+.levels-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+/* 关卡卡片基础样式 - 750×1334坐标系 */
+.level-card {
+    position: absolute;
+    width: 342px;   /* 171 * 2 */
+    height: 396px;  /* 198 * 2 */
+    background: #CDCDCD;
+    border-radius: 16px;  /* 8 * 2 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: levelFadeIn 0.5s ease-out;
+    
+    /* 强制启用触摸事件 */
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+/* 锁定关卡样式 */
+.level-card.locked {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.level-card.locked .level-text {
+    color: #666 !important;
+}
+
+/* 关卡背景容器 */
+.level-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;  /* 8 * 2 */
+    overflow: hidden;
+    
+    /* 确保不阻止父元素的触摸事件 */
+    pointer-events: none;
+}
+
+/* 关卡背景图片 - 750×1334坐标系 */
+.level-bg-image {
+    position: absolute;
+    width: 366px;   /* 183 * 2 */
+    height: 650.66px;  /* 325.33 * 2 */
+    left: calc(50% - 366px/2);
+    top: calc(50% - 650.66px/2 - 50.66px);  /* 25.33 * 2 */
+    object-fit: cover;
+    border-radius: 16px;  /* 8 * 2 */
+    
+    /* 确保不阻止父元素的触摸事件 */
+    pointer-events: none;
+}
+
+/* 关卡遮罩 - 未选中状态 */
+.level-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    border-radius: 16px;  /* 8 * 2 */
+    
+    /* 确保不阻止父元素的触摸事件 */
+    pointer-events: none;
+}
+
+/* 选中状态 - 移除遮罩 */
+.level-card.selected .level-overlay {
+    display: none;
+}
+
+/* 已通关关卡样式 - 与原selected样式一致 */
+.level-card.completed {
+    /* 保持简洁，无特殊效果 */
+}
+
+.level-card.completed .level-overlay {
+    display: none;  /* 移除遮罩 */
+}
+
+/* 当前挑战关卡样式 - 渐变边框和发光效果 */
+.level-card.current-challenge {
+    border: 8px solid transparent;  /* 4*2 */
+    border-radius: 16px;  /* 8*2 圆角效果 */
+    border-image-source: radial-gradient(113.11% 99.04% at 50% 0.96%, #FFFBAD 0%, #FFC860 34.14%, #FFFDC2 75.48%, #FFC95F 100%);
+    border-image-slice: 1;
+    box-shadow: 
+        0px 0px 12px 0px #FDD546,      /* 6*2 外发光 */
+        0px 0px 8px 0px #FFFC9E inset; /* 4*2 内发光 */
+    animation: challengePulse 2s ease-in-out infinite;
+}
+
+.level-card.current-challenge .level-overlay {
+    display: none;  /* 移除遮罩 */
+}
+
+/* 当前挑战关卡动画 */
+@keyframes challengePulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 
+            0px 0px 12px 0px #FDD546,
+            0px 0px 8px 0px #FFFC9E inset;
+    }
+    50% { 
+        transform: scale(1.02);
+        box-shadow: 
+            0px 0px 20px 0px #FDD546,     /* 10*2 */
+            0px 0px 12px 0px #FFFC9E inset; /* 6*2 */
+    }
+}
+
+/* 关卡标签容器 - Frame 44样式，750×1334坐标系 */
+.level-label {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 16px 8px;  /* 2*2, 8*2, 4*2 */
+    gap: 20px;  /* 10 * 2 */
+    
+    position: absolute;
+    width: 122px;   /* 61 * 2 */
+    height: 56px;   /* 28 * 2 */
+    left: calc(50% - 122px/2 - 1px);  /* 61*2/2, 0.5*2 */
+    top: 296px;     /* 148 * 2 */
+    
+    background: rgba(86, 33, 14, 0.5);
+    
+    /* 确保不阻止父元素的触摸事件 */
+    pointer-events: none;
+    border-radius: 16px;  /* 8 * 2 */
+}
+
+/* 关卡标签文字 - 750×1334坐标系 */
+.level-text {
+    width: 90px;    /* 45 * 2 */
+    height: 44px;   /* 22 * 2 */
+    
+    font-family: 'Alimama ShuHeiTi', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;    /* 16 * 2 */
+    line-height: 44px;  /* 22 * 2 */
+    text-align: center;
+    letter-spacing: -0.64px;  /* -0.32 * 2 */
+    
+    background: transparent;
+    white-space: nowrap;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    
+    /* 确保不阻止父元素的触摸事件 */
+    pointer-events: none;
+}
+
+/* 锁定关卡文字样式 */
+.level-card.locked .level-text {
+    color: #969696;
+}
+
+/* 已通关关卡文字样式 */
+.level-card.completed .level-text {
+    color: #FFFFFF;
+}
+
+/* 当前挑战关卡文字样式 */
+.level-card.current-challenge .level-text {
+    color: #FFFFFF;
+}
+
+/* 普通解锁关卡文字样式 */
+.level-card.unlocked .level-text {
+    color: #CCCCCC;
+}
+
+/* 关卡卡片位置 - 三行两列真正居中布局，750×1334坐标系 */
+/* 
+ * 卡片尺寸: 342×396px
+ * 页面尺寸: 750×1334px
+ * 网格布局: 三行两列
+ * 
+ * 水平居中计算:
+ * 两列总宽度: 342 * 2 = 684px
+ * 剩余宽度: 750 - 684 = 66px
+ * 均分3个间距: 66 / 3 = 22px (左边距=列间距=右边距)
+ * 
+ * 垂直居中计算:
+ * 三行总高度: 396 * 3 = 1188px
+ * 剩余高度: 1334 - 1188 = 146px  
+ * 均分4个间距: 146 / 4 = 37px (上边距=行间距=下边距)
+ */
+
+.level-card:nth-child(1) { /* 关卡1 - 第1行第1列 */
+    left: 22px;     /* 左边距 */
+    top: 37px;      /* 上边距 */
+}
+
+.level-card:nth-child(2) { /* 关卡2 - 第1行第2列 */
+    left: 386px;    /* 22 + 342 + 22 = 386 */
+    top: 37px;
+}
+
+.level-card:nth-child(3) { /* 关卡3 - 第2行第1列 */
+    left: 22px;
+    top: 470px;     /* 37 + 396 + 37 = 470 */
+}
+
+.level-card:nth-child(4) { /* 关卡4 - 第2行第2列 */
+    left: 386px;
+    top: 470px;
+}
+
+.level-card:nth-child(5) { /* 关卡5 - 第3行第1列 */
+    left: 22px;
+    top: 903px;     /* 470 + 396 + 37 = 903 */
+}
+
+.level-card:nth-child(6) { /* 关卡6 - 第3行第2列 */
+    left: 386px;
+    top: 903px;
+}
+
+/* 锁定关卡摇摆动画 - 750×1334坐标系 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }  /* -5 * 2 */
+    75% { transform: translateX(10px); }   /* 5 * 2 */
+}
+
+/* 关卡出现动画 */
+@keyframes levelFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(40px);  /* 20 * 2 */
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 关卡卡片悬停效果 - 非触摸设备 */
+@media (hover: hover) and (pointer: fine) {
+    .level-card:hover:not(.selected):not(.locked) {
+        transform: scale(1.02);
+        box-shadow: 0px 4px 16px rgba(253, 213, 70, 0.3);  /* 2*2, 8*2 */
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .level-card:active:not(.locked) {
+        transform: scale(0.98);
+    }
+}
+
+/* 防止意外选择 */
+.level-card * {
+    pointer-events: none;
+}
+
+.level-card {
+    pointer-events: auto;
+}
