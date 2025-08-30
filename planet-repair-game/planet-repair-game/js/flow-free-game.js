@@ -903,35 +903,49 @@ class FlowFreeGame {
          }
      }
      
-     // 前往下一关
-     goToNextLevel() {
-         console.log('🚀 前往下一关');
-         
-         // 计算下一关编号
-         const nextLevel = Math.min(this.currentLevel + 1, Object.keys(this.levelConfigs).length);  // 支持动态关卡数量
-         
-         // 保存通关状态到localStorage
-         const gameProgress = {
-             [`level${this.currentLevel}Completed`]: true,
-             currentLevel: nextLevel,
-             unlockedLevels: this.getUnlockedLevels(nextLevel)
-         };
-         
-         localStorage.setItem('planetRepairGameProgress', JSON.stringify(gameProgress));
-         console.log('💾 游戏进度已保存:', gameProgress);
-         
-         // 跳转到关卡选择页面
-         window.location.href = 'levels.html';
-     }
+         // 前往下一关
+    goToNextLevel() {
+        console.log('🚀 前往下一关');
+        
+        // 计算下一关编号
+        const nextLevel = Math.min(this.currentLevel + 1, Object.keys(this.levelConfigs).length);
+        
+        // 读取现有进度并合并
+        let gameProgress = {};
+        try {
+            const saved = localStorage.getItem('planetRepairGameProgress');
+            if (saved) {
+                gameProgress = JSON.parse(saved);
+            }
+        } catch (error) {
+            console.error('读取游戏进度失败:', error);
+        }
+        
+        // 更新通关状态和解锁信息
+        gameProgress[`level${this.currentLevel}Completed`] = true;
+        gameProgress.currentLevel = nextLevel;
+        gameProgress.unlockedLevels = this.getUnlockedLevels(nextLevel);
+        
+        localStorage.setItem('planetRepairGameProgress', JSON.stringify(gameProgress));
+        console.log('💾 游戏进度已保存:', gameProgress);
+        
+        // 跳转到关卡选择页面
+        if (window.GameUtils) {
+            window.GameUtils.navigateTo('levels.html');
+        } else {
+            window.location.href = 'levels.html';
+        }
+    }
      
-     // 获取解锁的关卡列表
-     getUnlockedLevels(currentLevel) {
-         const unlocked = [];
-         for (let i = 1; i <= currentLevel; i++) {
-             unlocked.push(i);
-         }
-         return unlocked;
-     }
+         // 获取解锁的关卡列表
+    getUnlockedLevels(maxLevel) {
+        const unlocked = [];
+        for (let i = 1; i <= Math.min(maxLevel, Object.keys(this.levelConfigs).length); i++) {
+            unlocked.push(i);
+        }
+        console.log(`🔓 生成解锁关卡列表: [${unlocked.join(', ')}]`);
+        return unlocked;
+    }
      
      // 显示失败遮罩
      showFailureOverlay() {
