@@ -120,59 +120,31 @@ function bindLevelEvents() {
             handleLevelClick(levelNumber, e);
         });
         
-        // 触摸事件优化 - 750×1334坐标系
-        let touchStarted = false;
-        
+        // 简化触摸事件 - 参考index.html的成功模式
         card.addEventListener('touchstart', function(e) {
             e.preventDefault();
-            e.stopPropagation();
-            touchStarted = true;
             
             console.log(`📱 触摸开始 - 关卡 ${levelNumber}`);
             
             if (!this.classList.contains('locked')) {
                 this.style.transform = 'scale(0.95)';
-                
-                // 使用坐标映射（如果需要精确位置）
-                if (window.gameScaleManager) {
-                    const touch = e.touches[0];
-                    const designCoords = window.gameScaleManager.screenToDesign(touch.clientX, touch.clientY);
-                    console.log(`触摸坐标 - 屏幕: ${touch.clientX},${touch.clientY} → 设计: ${designCoords.x.toFixed(0)},${designCoords.y.toFixed(0)}`);
-                }
             }
-        }, {passive: false});
-        
-        card.addEventListener('touchmove', function(e) {
-            // 如果触摸移动距离过大，取消点击
-            if (touchStarted) {
-                const touch = e.touches[0];
-                const rect = this.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                const distance = Math.sqrt(Math.pow(touch.clientX - centerX, 2) + Math.pow(touch.clientY - centerY, 2));
-                
-                if (distance > 50) { // 移动距离超过50px取消点击
-                    touchStarted = false;
-                    this.style.transform = '';
-                    console.log(`📱 触摸移动距离过大，取消点击`);
-                }
-            }
-        }, {passive: false});
+        });
         
         card.addEventListener('touchend', function(e) {
             e.preventDefault();
-            e.stopPropagation();
             this.style.transform = '';
             
-            console.log(`📱 触摸结束 - 关卡 ${levelNumber}, touchStarted: ${touchStarted}`);
+            console.log(`📱 触摸结束 - 关卡 ${levelNumber}`);
             
-            if (touchStarted && !this.classList.contains('locked')) {
-                console.log(`📱 触发关卡点击 - ${levelNumber}`);
-                handleLevelClick(levelNumber, e);
-            }
-            
-            touchStarted = false;
-        }, {passive: false});
+            // 延迟触发，防止与click重复
+            setTimeout(() => {
+                if (!this.classList.contains('locked')) {
+                    console.log(`📱 触发关卡点击 - ${levelNumber}`);
+                    handleLevelClick(levelNumber, e);
+                }
+            }, 50);
+        });
         
         console.log(`✅ 关卡 ${levelNumber} 事件绑定完成`);
     });
