@@ -118,9 +118,12 @@ function bindLevelEvents() {
             handleLevelClick(levelNumber, e);
         });
         
-        // 触摸事件优化 - 750×1334坐标系
+        // 触摸事件优化 - 移动端专用
+        let touchStarted = false;
+        
         card.addEventListener('touchstart', function(e) {
-            e.preventDefault();
+            console.log(`👆 触摸开始 - 关卡 ${levelNumber}`);
+            touchStarted = true;
             
             if (!this.classList.contains('locked')) {
                 this.style.transform = 'scale(0.95)';
@@ -132,18 +135,28 @@ function bindLevelEvents() {
                     console.log(`触摸坐标 - 屏幕: ${touch.clientX},${touch.clientY} → 设计: ${designCoords.x.toFixed(0)},${designCoords.y.toFixed(0)}`);
                 }
             }
-        });
+            
+            // 阻止默认行为，但不阻止事件传播
+            e.preventDefault();
+        }, { passive: false });
         
         card.addEventListener('touchend', function(e) {
-            e.preventDefault();
+            console.log(`👆 触摸结束 - 关卡 ${levelNumber}`);
             this.style.transform = '';
             
-            // 延迟触发，防止与click重复
-            setTimeout(() => {
-                if (!this.classList.contains('locked')) {
-                    handleLevelClick(levelNumber, e);
-                }
-            }, 50);
+            if (touchStarted && !this.classList.contains('locked')) {
+                console.log(`🎯 触摸点击关卡 ${levelNumber}`);
+                handleLevelClick(levelNumber, e);
+            }
+            
+            touchStarted = false;
+            e.preventDefault();
+        }, { passive: false });
+        
+        card.addEventListener('touchcancel', function(e) {
+            console.log(`❌ 触摸取消 - 关卡 ${levelNumber}`);
+            this.style.transform = '';
+            touchStarted = false;
         });
     });
     
