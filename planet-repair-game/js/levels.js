@@ -110,20 +110,25 @@ function initLevelStates(gameProgress) {
 
 // 绑定关卡事件 - 统一坐标映射
 function bindLevelEvents() {
-    levelCards.forEach((card) => {
-        const levelNumber = parseInt(card.dataset.level);
+    console.log(`🔗 绑定关卡事件 - 找到 ${levelCards.length} 个关卡卡片`);
+    
+    levelCards.forEach((card, index) => {
+        const levelNumber = parseInt(card.dataset.level) || (index + 1);
         
         // 点击事件 - 750×1334坐标系
         card.addEventListener('click', function(e) {
             handleLevelClick(levelNumber, e);
         });
         
-        // 触摸事件优化 - 移动端专用
+        // 触摸事件优化 - 750×1334坐标系
         let touchStarted = false;
         
         card.addEventListener('touchstart', function(e) {
-            console.log(`👆 触摸开始 - 关卡 ${levelNumber}`);
+            e.preventDefault();
+            e.stopPropagation();
             touchStarted = true;
+            
+            console.log(`📱 触摸开始 - 关卡 ${levelNumber}`);
             
             if (!this.classList.contains('locked')) {
                 this.style.transform = 'scale(0.95)';
@@ -135,30 +140,44 @@ function bindLevelEvents() {
                     console.log(`触摸坐标 - 屏幕: ${touch.clientX},${touch.clientY} → 设计: ${designCoords.x.toFixed(0)},${designCoords.y.toFixed(0)}`);
                 }
             }
-            
-            // 阻止默认行为，但不阻止事件传播
-            e.preventDefault();
-        }, { passive: false });
+        }, {passive: false});
+        
+        card.addEventListener('touchmove', function(e) {
+            // 如果触摸移动距离过大，取消点击
+            if (touchStarted) {
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const distance = Math.sqrt(Math.pow(touch.clientX - centerX, 2) + Math.pow(touch.clientY - centerY, 2));
+                
+                if (distance > 50) { // 移动距离超过50px取消点击
+                    touchStarted = false;
+                    this.style.transform = '';
+                    console.log(`📱 触摸移动距离过大，取消点击`);
+                }
+            }
+        }, {passive: false});
         
         card.addEventListener('touchend', function(e) {
-            console.log(`👆 触摸结束 - 关卡 ${levelNumber}`);
+            e.preventDefault();
+            e.stopPropagation();
             this.style.transform = '';
             
+            console.log(`📱 触摸结束 - 关卡 ${levelNumber}, touchStarted: ${touchStarted}`);
+            
             if (touchStarted && !this.classList.contains('locked')) {
-                console.log(`🎯 触摸点击关卡 ${levelNumber}`);
+                console.log(`📱 触发关卡点击 - ${levelNumber}`);
                 handleLevelClick(levelNumber, e);
             }
             
             touchStarted = false;
-            e.preventDefault();
-        }, { passive: false });
+        }, {passive: false});
         
-        card.addEventListener('touchcancel', function(e) {
-            console.log(`❌ 触摸取消 - 关卡 ${levelNumber}`);
-            this.style.transform = '';
-            touchStarted = false;
-        });
+        console.log(`✅ 关卡 ${levelNumber} 事件绑定完成`);
     });
+    
+    console.log(`🎯 所有关卡事件绑定完成！`);
     
     // 键盘控制 - 750×1334架构
     document.addEventListener('keydown', function(e) {
@@ -181,7 +200,7 @@ function bindLevelEvents() {
 
 // 处理关卡点击 - 统一坐标系
 function handleLevelClick(levelNumber, event = null) {
-    console.log(`🎯 点击关卡 ${levelNumber} - 750×1334坐标系`);
+    console.log(`🎯 点击关卡 ${levelNumber} - 750×1334坐标系 [事件类型: ${event ? event.type : 'unknown'}]`);
     
     // 记录点击坐标（用于调试）
     if (event && window.gameScaleManager) {
