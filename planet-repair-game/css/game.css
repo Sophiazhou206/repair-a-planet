@@ -1,0 +1,765 @@
+/*
+ * 游戏页面样式 - 统一750×1334架构
+ * 移除所有旧的响应式代码，统一使用base.js缩放管理器
+ */
+
+/* 游戏主容器 - 统一750×1334逻辑坐标系 */
+.game-container {
+    /* base.css会自动设置尺寸，这里不重复定义 */
+    background-color: #252429;
+}
+
+/* 背景容器 */
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 背景图片 */
+.background-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* 模糊覆盖层 */
+.blur-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    z-index: 2;
+}
+
+/* 半透明边框覆盖层 - 750×1334坐标系，水平居中 */
+.game-border-overlay {
+    position: absolute;
+    width: 716px;   /* 358 * 2 */
+    height: 1256px; /* 628 * 2 */
+    top: 32px;      /* 16 * 2 */
+    left: calc(50% - 358px);  /* 水平居中：50% - 716px/2 */
+    border-radius: 4px;  /* 2 * 2 */
+    background: #FFFFFF1A;
+    z-index: 3;
+}
+
+/* 游戏网格容器 - Frame 37, 750×1334坐标系 */
+.game-grid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;  /* 12 * 2 */
+    gap: 4px;       /* 2 * 2 */
+    
+    position: absolute;
+    width: 688px;   /* 统一标准容器尺寸 */
+    height: 688px;  /* 统一标准容器尺寸 */
+    left: calc(50% - 344px);  /* 水平居中，688/2 = 344px */
+    top: calc(50% - 344px + 88px);  /* 垂直居中向下偏移44*2 */
+    
+    background: #FFEDD5;
+    box-shadow: 0px 8px 40px rgba(88, 40, 17, 0.3);  /* 4*2, 20*2 */
+    border-radius: 16px;  /* 8 * 2 */
+    z-index: 4;
+}
+
+/* 顶部栏容器 */
+.top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;  /* 给顶部栏预留空间 */
+    z-index: 10;
+}
+
+/* 关卡信息栏 - 750×1334坐标系，水平居中 */
+.level-info-bar {
+    position: absolute;
+    width: 668px;   /* 334 * 2 */
+    height: 128px;  /* 64 * 2 */
+    left: calc(50% - 334px);  /* 水平居中：50% - 668px/2 */
+    top: 100px;     /* 用户指定位置 */
+    
+    background: url(../images/e0b687cbfa8d5b53347a3c8f75fe3486aec50bafedf6-b4RJ8I_fw1200.jpg);
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0px 20px 8px 0px #5828114D, 0px 8px 0px 0px #D0774E;  /* 10*2, 4*2, 4*2 */
+    border-radius: 32px;  /* 16 * 2 */
+}
+
+/* 头像图片 - 750×1334坐标系 */
+.avatar-image {
+    position: absolute;
+    width: 176px;   /* 88 * 2 */
+    height: 200px;  /* 100 * 2 */
+    top: -48px;     /* -24 * 2 */
+    left: 16px;     /* 8 * 2 */
+    object-fit: cover;
+    z-index: 11;
+}
+
+/* 关卡详细信息区域 - 750×1334坐标系 */
+.level-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 52px;      /* 26 * 2 */
+    
+    position: absolute;
+    left: 216px;    /* 头像右侧，108 * 2 */
+    top: 16px;      /* 8 * 2 */
+    width: 436px;   /* 218 * 2 */
+    height: 96px;   /* 48 * 2 */
+    z-index: 11;
+}
+
+/* 关卡标题容器 - Frame 20 */
+.level-title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 10px;      /* 5 * 2 */
+    
+    width: 216px;   /* 108 * 2 */
+    height: 92px;   /* 46 * 2 */
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 关卡文字区域 - Frame 14 */
+.level-title-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;       /* 4 * 2 */
+    
+    width: 116px;   /* 58 * 2 */
+    height: 46px;   /* 23 * 2 */
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* "关卡"文字 */
+.level-text {
+    width: 80px;    /* 40 * 2 */
+    height: 44px;   /* 22 * 2 */
+    
+    font-family: 'FZHuaLi-M14S', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;    /* 20 * 2 */
+    line-height: 44px;  /* 22 * 2 */
+    text-align: center;
+    letter-spacing: -0.64px;  /* -0.32 * 2 */
+    
+    color: #C65F39;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 关卡数字 */
+.level-number {
+    width: 28px;    /* 14 * 2 */
+    height: 46px;   /* 23 * 2 */
+    
+    font-family: 'FZChaoCuHei-M10S', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;    /* 20 * 2 */
+    line-height: 46px;  /* 23 * 2 */
+    text-align: center;
+    letter-spacing: -0.64px;  /* -0.32 * 2 */
+    
+    color: #C65F39;
+    
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* 控制按钮区域 - Frame 10 */
+.control-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;      /* 8 * 2 */
+    
+    width: 216px;   /* 108 * 2 */
+    height: 36px;   /* 18 * 2 */
+    
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* 重置按钮 - Frame 8 */
+.reset-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 16px;  /* 2*2, 8*2 */
+    gap: 20px;          /* 10 * 2 */
+    
+    width: 100px;   /* 50 * 2 */
+    height: 36px;   /* 18 * 2 */
+    
+    background: #E8AB88;
+    border-radius: 4px;  /* 2 * 2 */
+    cursor: pointer;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 重置图标容器 - Frame 9 */
+.reset-icon-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;       /* 4 * 2 */
+    
+    width: 68px;    /* 34 * 2 */
+    height: 28px;   /* 14 * 2 */
+    
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* 重置图标图片 */
+.reset-icon-image {
+    width: 20px;    /* 10 * 2 */
+    height: 20px;   /* 10 * 2 */
+    
+    object-fit: cover;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 重置文字 */
+.reset-text {
+    width: 40px;    /* 20 * 2 */
+    height: 28px;   /* 14 * 2 */
+    
+    font-family: 'PingFang SC', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;    /* 10 * 2 */
+    line-height: 28px;  /* 14 * 2 */
+    text-align: center;
+    
+    color: #C65F39;
+    
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* 提示按钮 */
+.hint-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 16px;  /* 2*2, 8*2 */
+    gap: 8px;           /* 4 * 2 */
+    
+    width: 100px;   /* 50 * 2 */
+    height: 36px;   /* 18 * 2 */
+    
+    background: #DC8859;
+    border-radius: 4px;  /* 2 * 2 */
+    cursor: pointer;
+    
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* 提示图标容器 */
+.hint-icon-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 8px;       /* 4 * 2 */
+    
+    width: 68px;    /* 34 * 2 */
+    height: 28px;   /* 14 * 2 */
+    
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+/* 提示图标图片 */
+.hint-icon-image {
+    width: 20px;    /* 10 * 2 */
+    height: 20px;   /* 10 * 2 */
+    
+    object-fit: cover;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 提示文字 */
+.hint-text {
+    width: 40px;    /* 20 * 2 */
+    height: 28px;   /* 14 * 2 */
+    
+    font-family: 'PingFang SC', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;    /* 10 * 2 */
+    line-height: 28px;  /* 14 * 2 */
+    text-align: center;
+    
+    color: #FFFFFF;
+    
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* 倒计时容器 - Frame 16, 750×1334坐标系，独立定位 */
+.countdown-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px 24px 16px 16px;  /* 8*2, 12*2, 8*2, 8*2 */
+    
+    position: absolute;
+    width: 200px;   /* 调整后的宽度 */
+    height: 96px;   /* 48 * 2 */
+    right: 16px;    /* 距离顶部栏右边框8px * 2 */
+    top: 16px;      /* 8 * 2 */
+    
+    background: #FFDEBC;
+    border-radius: 16px;  /* 8 * 2 */
+    z-index: 12;
+}
+
+/* 沙漏头像容器 - Frame 7 */
+.hourglass-avatar {
+    width: 64px;    /* 32 * 2 */
+    height: 64px;   /* 32 * 2 */
+    border-radius: 10.67px;  /* 5.33333 * 2 */
+    position: relative;
+    
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 沙漏图片 */
+.hourglass-image {
+    position: absolute;
+    width: 80px;    /* 40 * 2 */
+    height: 80px;   /* 40 * 2 */
+    left: calc(50% - 50px);  /* 用户指定的水平位置 */
+    top: -8px;      /* -4 * 2 */
+    
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* 倒计时数字容器 - Frame 18 */
+.countdown-numbers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 0px;       /* 数字框紧挨着 */
+    
+    position: absolute;
+    width: 120px;   /* 40 * 3，三位数 */
+    height: 56px;   /* 28 * 2 */
+    right: 12px;    /* 距离容器右边框6px * 2 */
+    top: 50%;
+    transform: translateY(-50%);  /* 垂直居中 */
+}
+
+/* 倒计时数字框 - Frame 8/10 */
+.countdown-digit {
+    box-sizing: border-box;
+    width: 40px;    /* 20 * 2 */
+    height: 56px;   /* 28 * 2 */
+    
+    background: linear-gradient(180deg, #FEDFBC 0%, #FFFDCC 100%);
+    box-shadow: 0px 4px 0px rgba(208, 119, 78, 0.5);  /* 2 * 2 */
+    border-radius: 8px;  /* 4 * 2 */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    flex: none;
+    flex-grow: 0;
+}
+
+/* 数字框之间的间距 */
+.countdown-digit:not(:last-child) {
+    margin-right: 0px;  /* 紧挨着显示 */
+}
+
+/* 数字文字 */
+.digit-text {
+    width: 24px;    /* 12 * 2 */
+    height: 46px;   /* 23 * 2 */
+    
+    font-family: 'FZChaoCuHei-M10S', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;    /* 20 * 2 */
+    line-height: 46px;  /* 23 * 2 */
+    text-align: center;
+    letter-spacing: -0.64px;  /* -0.32 * 2 */
+    
+    color: #C65F39;
+}
+
+/* 游戏网格行 */
+.grid-row {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;       /* 2 * 2 */
+    width: 100%;
+}
+
+/* 6x6网格：使用较大的单元格 */
+.game-grid-container.size-6 {
+    width: 688px;    /* 统一标准容器尺寸 */
+    height: 688px;   /* 统一标准容器尺寸 */
+    left: calc(50% - 344px);  /* 688/2 = 344px */
+}
+
+.game-grid-container.size-6 .grid-cell {
+    width: 103px;   /* (688-24*2-4*5)/6 = 640/6 ≈ 103px */
+    height: 103px;  /* 保持正方形 */
+}
+
+/* 7x7网格：标准单元格大小 */
+.game-grid-container.size-7 {
+    width: 688px;    /* 统一标准容器尺寸 */
+    height: 688px;   /* 统一标准容器尺寸 */
+    left: calc(50% - 344px);  /* 688/2 = 344px */
+}
+
+.game-grid-container.size-7 .grid-cell {
+    width: 88px;    /* (688-24*2-4*6)/7 = 616/7 ≈ 88px */
+    height: 88px;   /* 保持正方形 */
+}
+
+/* 8x8网格：使用较小的单元格 */
+.game-grid-container.size-8 {
+    width: 688px;    /* 统一标准容器尺寸 */
+    height: 688px;   /* 统一标准容器尺寸 */
+    left: calc(50% - 344px);  /* 688/2 = 344px */
+}
+
+.game-grid-container.size-8 .grid-cell {
+    width: 76px;    /* (688-24*2-4*7)/8 = 612/8 ≈ 76px */
+    height: 76px;   /* 保持正方形 */
+}
+
+/* 9x9网格：使用最小的单元格 */
+.game-grid-container.size-9 {
+    width: 688px;    /* 统一标准容器尺寸 */
+    height: 688px;   /* 统一标准容器尺寸 */
+    left: calc(50% - 344px);  /* 688/2 = 344px */
+}
+
+.game-grid-container.size-9 .grid-cell {
+    width: 68px;    /* (688-24*2-4*8)/9 = 608/9 ≈ 68px */
+    height: 68px;   /* 保持正方形 */
+}
+
+/* 游戏网格单元格 - 基础样式 */
+.grid-cell {
+    background: #F4B58E33;  /* 半透明橙色背景，20%不透明度 */
+    border-radius: 8px;  /* 4 * 2 */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* 2*2, 4*2 */
+}
+
+.grid-cell:active {
+    transform: scale(0.95);
+}
+
+/* 端点图标样式 */
+.endpoint-icon {
+    width: 88px;    /* 44 * 2 */
+    height: 88px;   /* 44 * 2 */
+    object-fit: cover;
+    border-radius: 8px;  /* 4 * 2 */
+    pointer-events: none;  /* 防止影响点击事件 */
+}
+
+/* 网格交互状态 */
+.grid-cell.drawing {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.grid-cell.connected {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 倒计时闪烁动画 */
+@keyframes countdownFlash {
+    0% { background-color: #FFDEBC; }
+    50% { background-color: #FF6B6B; }
+    100% { background-color: #FFDEBC; }
+}
+
+/* 游戏完成效果 */
+.game-completed {
+    animation: gameComplete 1s ease-in-out;
+}
+
+@keyframes gameComplete {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); filter: brightness(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* 游戏结果遮罩层 */
+.game-result-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);  /* 半透明黑色遮罩 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.result-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;  /* 20 * 2 */
+}
+
+/* 成功结果样式 */
+.success-result {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    animation: successFadeIn 0.8s ease-out;
+}
+
+.success-image {
+    position: absolute;
+    width: 780px;    /* 390 * 2 */
+    height: 1240px;  /* 620 * 2 */
+    top: -800px;     /* 调整后的位置 */
+    left: calc(50% - 390px);  /* 水平居中 */
+    object-fit: contain;
+}
+
+/* 下一关按钮（覆盖在通关图片上的点击区域） */
+.next-level-button {
+    position: absolute;
+    width: 240px;    /* 更大的点击区域 */
+    height: 100px;
+    top: 175px;      /* 调整位置 */
+    left: calc(50% - 120px);  /* 水平居中 */
+    cursor: pointer;
+
+
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    animation: nextLevelPulse 2s ease-in-out infinite;
+}
+
+@keyframes nextLevelPulse {
+    0%, 100% { 
+        transform: scale(1);
+    }
+    50% { 
+        transform: scale(1.02);
+    }
+}
+
+.next-level-button:hover {
+    transform: scale(1.05);
+    animation: none;  /* 停止脉动动画 */
+}
+
+.next-level-button:active {
+    transform: scale(0.95);
+}
+
+/* 失败结果样式 */
+.failure-result {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    animation: failureFadeIn 0.8s ease-out;
+}
+
+.failure-image {
+    position: absolute;
+    width: 560px;    /* 280 * 2 */
+    height: 190px;   /* 95 * 2 */
+    top: -200px;     /* 调整后的位置 */
+    left: -275px;    /* 调整后的位置 */
+    object-fit: contain;
+}
+
+.restart-button-image {
+    position: absolute;
+    width: 360px;    /* 180 * 2 */
+    height: 152px;   /* 76 * 2 */
+    top: 300px;      /* 调整后的位置 */
+    left: -175px;    /* 调整后的位置 */
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.restart-button-image:hover {
+    transform: scale(1.05);
+}
+
+.restart-button-image:active {
+    transform: scale(0.95);
+}
+
+/* 丰富的动画效果 */
+@keyframes successFadeIn {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.3) rotate(-10deg); 
+        filter: brightness(2) blur(10px);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.1) rotate(5deg); 
+        filter: brightness(1.5) blur(2px);
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1) rotate(0deg); 
+        filter: brightness(1) blur(0px);
+    }
+}
+
+@keyframes failureFadeIn {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.5) translateY(100px); 
+        filter: grayscale(1) blur(5px);
+    }
+    70% { 
+        opacity: 0.9; 
+        transform: scale(1.05) translateY(-10px); 
+        filter: grayscale(0.3) blur(1px);
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1) translateY(0px); 
+        filter: grayscale(0) blur(0px);
+    }
+}
+
+/* 成功图片额外的持续动画 */
+.success-image {
+    animation: successGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes successGlow {
+    0% { 
+        filter: brightness(1) drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+    }
+    100% { 
+        filter: brightness(1.2) drop-shadow(0 0 40px rgba(255, 215, 0, 0.6));
+    }
+}
+
+/* 失败图片摇摆动画 */
+.failure-image {
+    animation: failureShake 0.5s ease-in-out 3;
+}
+
+@keyframes failureShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px) rotate(-2deg); }
+    75% { transform: translateX(10px) rotate(2deg); }
+}
+
+/* 再来一局按钮跳动动画 */
+.restart-button-image {
+    animation: restartBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes restartBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.restart-button-image:hover {
+    animation: restartHover 0.3s ease-out forwards;
+}
+
+@keyframes restartHover {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); filter: brightness(1.2); }
+}
+
+/* 游戏完成状态 */
+.game-completed .grid-cell {
+    animation: completePulse 0.5s ease-in-out;
+}
+
+@keyframes completePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
