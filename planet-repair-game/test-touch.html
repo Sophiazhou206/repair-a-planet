@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>触摸测试</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #252429;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-card {
+            width: 200px;
+            height: 200px;
+            background: #FFF;
+            margin: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid blue;
+        }
+        
+        .test-card:active {
+            transform: scale(0.95);
+        }
+        
+        .debug-info {
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: white;">触摸事件测试</h1>
+    <div id="debug" class="debug-info">等待事件...</div>
+    
+    <div class="test-card" id="card1">
+        <span>卡片 1</span>
+    </div>
+    
+    <div class="test-card" id="card2">
+        <span>卡片 2</span>
+    </div>
+    
+    <script>
+        const debug = document.getElementById('debug');
+        let eventCount = 0;
+        
+        function logEvent(msg) {
+            eventCount++;
+            debug.innerHTML = `[${eventCount}] ${msg}<br>` + debug.innerHTML;
+            console.log(msg);
+        }
+        
+        // 测试所有卡片
+        document.querySelectorAll('.test-card').forEach((card, index) => {
+            const cardNum = index + 1;
+            
+            // 点击事件
+            card.addEventListener('click', function(e) {
+                logEvent(`🖱️ 卡片 ${cardNum} - click事件`);
+            });
+            
+            // 触摸事件
+            card.addEventListener('touchstart', function(e) {
+                logEvent(`📱 卡片 ${cardNum} - touchstart事件`);
+                e.preventDefault();
+            }, {passive: false});
+            
+            card.addEventListener('touchend', function(e) {
+                logEvent(`📱 卡片 ${cardNum} - touchend事件`);
+                e.preventDefault();
+                
+                setTimeout(() => {
+                    logEvent(`📱 卡片 ${cardNum} - 触发延迟点击`);
+                    alert(`卡片 ${cardNum} 被点击了！`);
+                }, 50);
+            }, {passive: false});
+            
+            // Pointer事件
+            card.addEventListener('pointerdown', function(e) {
+                logEvent(`👆 卡片 ${cardNum} - pointerdown事件`);
+            });
+            
+            logEvent(`✅ 卡片 ${cardNum} 事件绑定完成`);
+        });
+        
+        logEvent(`🎯 所有测试卡片初始化完成`);
+    </script>
+</body>
+</html>

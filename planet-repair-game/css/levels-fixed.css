@@ -29,6 +29,13 @@
     cursor: pointer;
     transition: all 0.3s ease;
     animation: levelFadeIn 0.5s ease-out;
+    
+    /* 强制启用触摸事件 */
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: auto;
+    z-index: 10;
 }
 
 /* 锁定关卡样式 */

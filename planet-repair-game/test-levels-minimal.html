@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>最小化关卡测试</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #252429;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-level-card {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: #FFF;
+            border-radius: 10px;
+            border: 2px solid red;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 100px;
+            left: 50px;
+        }
+        
+        .test-level-card:active {
+            transform: scale(0.95);
+        }
+        
+        .debug-log {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            height: 200px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            font-size: 12px;
+            overflow-y: auto;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div id="debugLog" class="debug-log">等待触摸事件...</div>
+    
+    <div class="test-level-card" data-level="1">
+        <span>关卡 1</span>
+    </div>
+    
+    <script>
+        const debugLog = document.getElementById('debugLog');
+        let logCount = 0;
+        
+        function log(msg) {
+            logCount++;
+            const time = new Date().toLocaleTimeString();
+            debugLog.innerHTML = `[${logCount}] ${time}: ${msg}<br>` + debugLog.innerHTML;
+            console.log(`[${logCount}] ${msg}`);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🎯 页面加载完成');
+            
+            const card = document.querySelector('.test-level-card');
+            
+            if (!card) {
+                log('❌ 找不到测试卡片');
+                return;
+            }
+            
+            log('✅ 找到测试卡片，开始绑定事件');
+            
+            // 点击事件
+            card.addEventListener('click', function(e) {
+                log('🖱️ click事件触发');
+                alert('点击成功！');
+            });
+            
+            // 触摸事件
+            card.addEventListener('touchstart', function(e) {
+                log('📱 touchstart事件触发');
+                e.preventDefault();
+                this.style.transform = 'scale(0.95)';
+            }, {passive: false});
+            
+            card.addEventListener('touchend', function(e) {
+                log('📱 touchend事件触发');
+                e.preventDefault();
+                this.style.transform = '';
+                
+                setTimeout(() => {
+                    log('📱 延迟触发点击');
+                    alert('触摸点击成功！');
+                }, 50);
+            }, {passive: false});
+            
+            // Pointer事件
+            card.addEventListener('pointerdown', function(e) {
+                log(`👆 pointerdown事件触发 - 类型: ${e.pointerType}`);
+            });
+            
+            log('🎯 所有事件绑定完成');
+        });
+    </script>
+</body>
+</html>

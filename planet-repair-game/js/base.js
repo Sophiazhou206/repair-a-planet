@@ -159,13 +159,17 @@ window.gameScaleManager = new GameScaleManager();
 
 // 页面加载完成后自动初始化
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 base.js DOMContentLoaded 触发');
+    
     // 延迟初始化，确保DOM完全就绪
     setTimeout(() => {
+        console.log('🎯 开始初始化游戏缩放管理器');
         const success = window.gameScaleManager.init();
         if (success) {
             console.log('✅ 游戏基础架构初始化完成');
             
             // 触发自定义事件
+            console.log('📢 触发 gameScaleReady 事件');
             window.dispatchEvent(new CustomEvent('gameScaleReady'));
         }
     }, 50);

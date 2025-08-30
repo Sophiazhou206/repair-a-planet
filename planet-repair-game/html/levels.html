@@ -80,5 +80,76 @@
     
     <script src="../js/base.js"></script>
     <script src="../js/levels.js"></script>
+    
+    <!-- 备用触摸事件处理 -->
+    <script>
+        console.log('🔧 加载备用触摸事件处理');
+        
+        // 备用初始化，不依赖复杂的架构
+        setTimeout(() => {
+            console.log('🚀 备用初始化开始');
+            
+            const cards = document.querySelectorAll('.level-card');
+            console.log(`🎯 备用方案找到 ${cards.length} 个关卡卡片`);
+            
+            cards.forEach((card, index) => {
+                const levelNum = index + 1;
+                
+                // 强制样式
+                card.style.touchAction = 'manipulation';
+                card.style.userSelect = 'none';
+                card.style.webkitTapHighlightColor = 'transparent';
+                card.style.pointerEvents = 'auto';
+                card.style.zIndex = '20';
+                
+                // 备用点击处理
+                function backupClick() {
+                    console.log(`🚀 备用点击处理 - 关卡 ${levelNum}`);
+                    if (levelNum === 1) {
+                        console.log(`✅ 进入关卡 ${levelNum}`);
+                        window.location.href = `game.html?level=${levelNum}`;
+                    } else {
+                        console.log(`🔒 关卡 ${levelNum} 未解锁`);
+                        alert(`关卡 ${levelNum} 未解锁`);
+                    }
+                }
+                
+                // 移除所有现有事件监听器（如果有的话）
+                card.onclick = null;
+                card.ontouchstart = null;
+                card.ontouchend = null;
+                
+                // 简单直接的事件处理
+                card.addEventListener('click', function(e) {
+                    console.log(`🖱️ 备用click - 关卡 ${levelNum}`);
+                    e.stopPropagation();
+                    backupClick();
+                });
+                
+                card.addEventListener('touchstart', function(e) {
+                    console.log(`📱 备用touchstart - 关卡 ${levelNum}`);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                card.addEventListener('touchend', function(e) {
+                    console.log(`📱 备用touchend - 关卡 ${levelNum}`);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.style.transform = '';
+                    
+                    setTimeout(() => {
+                        console.log(`📱 备用延迟点击 - 关卡 ${levelNum}`);
+                        backupClick();
+                    }, 100);
+                });
+                
+                console.log(`✅ 备用事件绑定完成 - 关卡 ${levelNum}`);
+            });
+            
+            console.log('🎯 备用事件处理完成！');
+        }, 500);
+    </script>
 </body>
 </html>

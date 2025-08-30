@@ -6,13 +6,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎯 关卡选择页面已加载');
     
+    // 强制初始化，不依赖复杂的事件等待
+    setTimeout(() => {
+        console.log('🚀 强制初始化关卡页面');
+        initLevelsPage();
+    }, 100);
+    
     // 等待基础架构初始化完成
     window.addEventListener('gameScaleReady', function() {
+        console.log('📏 收到 gameScaleReady 事件');
         initLevelsPage();
     });
     
     // 如果基础架构已经准备好，直接初始化
     if (window.gameScaleManager && window.gameScaleManager.isInitialized) {
+        console.log('📏 基础架构已准备好，直接初始化');
         initLevelsPage();
     }
 });
@@ -29,9 +37,14 @@ function initLevelsPage() {
     levelCards = document.querySelectorAll('.level-card');
     
     if (levelCards.length === 0) {
-        console.error('关卡卡片未找到');
+        console.error('❌ 关卡卡片未找到！检查DOM结构...');
+        console.log('🔍 尝试查找其他选择器...');
+        const allDivs = document.querySelectorAll('div');
+        console.log(`📊 页面共有 ${allDivs.length} 个div元素`);
         return;
     }
+    
+    console.log(`✅ 找到 ${levelCards.length} 个关卡卡片`);
     
     // 加载游戏进度
     const gameProgress = loadGameProgress();
@@ -115,27 +128,32 @@ function bindLevelEvents() {
     levelCards.forEach((card, index) => {
         const levelNumber = parseInt(card.dataset.level) || (index + 1);
         
+        console.log(`🎯 正在绑定关卡 ${levelNumber} 事件...`);
+        
+        // 添加调试样式，确保元素可见
+        card.style.border = '2px solid red';
+        card.style.zIndex = '999';
+        
         // 点击事件 - 750×1334坐标系
         card.addEventListener('click', function(e) {
+            console.log(`🖱️ 关卡 ${levelNumber} 被点击 (click事件)`);
             handleLevelClick(levelNumber, e);
         });
         
         // 简化触摸事件 - 参考index.html的成功模式
         card.addEventListener('touchstart', function(e) {
+            console.log(`📱 触摸开始 - 关卡 ${levelNumber} (touchstart事件)`);
             e.preventDefault();
-            
-            console.log(`📱 触摸开始 - 关卡 ${levelNumber}`);
             
             if (!this.classList.contains('locked')) {
                 this.style.transform = 'scale(0.95)';
             }
-        });
+        }, {passive: false});
         
         card.addEventListener('touchend', function(e) {
+            console.log(`📱 触摸结束 - 关卡 ${levelNumber} (touchend事件)`);
             e.preventDefault();
             this.style.transform = '';
-            
-            console.log(`📱 触摸结束 - 关卡 ${levelNumber}`);
             
             // 延迟触发，防止与click重复
             setTimeout(() => {
@@ -144,6 +162,11 @@ function bindLevelEvents() {
                     handleLevelClick(levelNumber, e);
                 }
             }, 50);
+        }, {passive: false});
+        
+        // 添加额外的事件监听器用于调试
+        card.addEventListener('pointerdown', function(e) {
+            console.log(`👆 关卡 ${levelNumber} 被按下 (pointerdown事件)`);
         });
         
         console.log(`✅ 关卡 ${levelNumber} 事件绑定完成`);
