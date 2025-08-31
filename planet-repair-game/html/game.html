@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>修一个星球 - 关卡1</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/game.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 背景层 -->
+        <div class="background-container">
+            <img src="../images/desert-canyon-bg.png" alt="关卡1背景" class="background-image">
+            <div class="blur-overlay"></div>
+        </div>
+        
+        <!-- 半透明边框覆盖层 -->
+        <div class="game-border-overlay"></div>
+        
+        <!-- 顶部栏 -->
+        <div class="top-bar">
+            <div class="level-info-bar">
+                <!-- 头像图片 -->
+                <img src="../images/avatar.png" alt="头像" class="avatar-image">
+                
+                <!-- 关卡详细信息区域 -->
+                <div class="level-details">
+                    <!-- 关卡标题容器 -->
+                    <div class="level-title-container">
+                        <!-- 关卡文字区域 -->
+                        <div class="level-title-text">
+                            <span class="level-text">关卡</span>
+                            <span class="level-number">1</span>
+                        </div>
+                        
+                        <!-- 控制按钮区域 -->
+                        <div class="control-buttons">
+                            <!-- 重置按钮 -->
+                            <div class="reset-button">
+                                <div class="reset-icon-container">
+                                    <img src="../images/reset.png" alt="重置图标" class="reset-icon-image">
+                                    <span class="reset-text">重置</span>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- 倒计时容器 - 独立定位 -->
+                <div class="countdown-container">
+                    <!-- 沙漏图标 -->
+                    <div class="hourglass-avatar">
+                        <img src="../images/hourglass-icon.png" alt="沙漏图标" class="hourglass-image">
+                    </div>
+                    
+                    <!-- 倒计时数字 -->
+                    <div class="countdown-numbers">
+                        <div class="countdown-digit">
+                            <span class="digit-text"></span>
+                        </div>
+                        <div class="countdown-digit">
+                            <span class="digit-text"></span>
+                        </div>
+                        <div class="countdown-digit">
+                            <span class="digit-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏网格区域 -->
+        <div class="game-grid-container">
+            <!-- 动态生成6x6网格 -->
+        </div>
+        
+        <!-- 玩法描述（仅第一关显示） -->
+        <div class="gameplay-description" id="gameplay-description" style="display: none;">
+            <div class="gameplay-background"></div>
+            <p class="gameplay-text">🔗 连起相同图标，格子全占满！轻点可撤销～✨</p>
+        </div>
+        
+        <!-- 游戏结果遮罩层 -->
+        <div class="game-result-overlay" id="game-result-overlay" style="display: none;">
+            <div class="result-content">
+                <!-- 成功结果 -->
+                <div class="success-result" id="success-result" style="display: none;">
+                    <img src="../images/通关.png" alt="通关成功" class="success-image">
+                    <!-- 下一关按钮（点击区域覆盖在通关图片上） -->
+                    <div class="next-level-button" id="next-level-button"></div>
+                </div>
+                
+                <!-- 失败结果 -->
+                <div class="failure-result" id="failure-result" style="display: none;">
+                    <img src="../images/失败.png" alt="通关失败" class="failure-image">
+                    <img src="../images/再来一局.png" alt="再来一局" class="restart-button-image" id="restart-button">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/base.js"></script>
+    <script src="../js/game.js"></script>
+    <script src="../js/flow-free-game.js"></script>
+</body>
+</html>

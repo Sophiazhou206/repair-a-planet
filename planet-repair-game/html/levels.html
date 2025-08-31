@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>关卡选择 - 修一个星球</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/levels-fixed.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 关卡容器 -->
+        <div class="levels-container">
+            <!-- 关卡1 - 初始状态 -->
+            <div class="level-card" data-level="1">
+                <div class="level-background">
+                    <img src="../images/level-1-bg.png" alt="关卡1" class="level-bg-image">
+                </div>
+                <div class="level-label">
+                    <span class="level-text">关卡 1</span>
+                </div>
+            </div>
+            
+            <!-- 关卡2 - 锁定 -->
+            <div class="level-card locked" data-level="2">
+                <div class="level-background">
+                    <img src="../images/level-2-bg.png" alt="关卡2" class="level-bg-image">
+                    <div class="level-overlay"></div>
+                </div>
+                <div class="level-label">
+                    <span class="level-text">关卡 2</span>
+                </div>
+            </div>
+            
+            <!-- 关卡3 - 锁定 -->
+            <div class="level-card locked" data-level="3">
+                <div class="level-background">
+                    <img src="../images/level-3-bg.png" alt="关卡3" class="level-bg-image">
+                    <div class="level-overlay"></div>
+                </div>
+                <div class="level-label">
+                    <span class="level-text">关卡 3</span>
+                </div>
+            </div>
+            
+            <!-- 关卡4 - 锁定 -->
+            <div class="level-card locked" data-level="4">
+                <div class="level-background">
+                    <img src="../images/level-4-bg.png" alt="关卡4" class="level-bg-image">
+                    <div class="level-overlay"></div>
+                </div>
+                <div class="level-label">
+                    <span class="level-text">关卡 4</span>
+                </div>
+            </div>
+            
+            <!-- 关卡5 - 锁定 -->
+            <div class="level-card locked" data-level="5">
+                <div class="level-background">
+                    <img src="../images/level-5-bg.png" alt="关卡5" class="level-bg-image">
+                    <div class="level-overlay"></div>
+                </div>
+                <div class="level-label">
+                    <span class="level-text">关卡 5</span>
+                </div>
+            </div>
+            
+            <!-- 关卡6 - 锁定 -->
+            <div class="level-card locked" data-level="6">
+                <div class="level-background">
+                    <img src="../images/level-6-bg.png" alt="关卡6" class="level-bg-image">
+                    <div class="level-overlay"></div>
+                </div>
+                <div class="level-label">
+                    <span class="level-text">关卡 6</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/base.js"></script>
+    <script src="../js/levels.js"></script>
+    
+    <!-- 移动端触摸修复 - 备用事件处理 -->
+    <script>
+        console.log('🔧 加载移动端触摸修复');
+        
+        // 等待页面完全加载后执行
+        setTimeout(() => {
+            console.log('🚀 开始移动端触摸修复');
+            
+            const cards = document.querySelectorAll('.level-card');
+            console.log(`🎯 找到 ${cards.length} 个关卡卡片，开始修复触摸事件`);
+            
+            cards.forEach((card, index) => {
+                const levelNum = index + 1;
+                
+                console.log(`🔧 修复关卡 ${levelNum} 触摸事件`);
+                
+                // 强制启用触摸
+                card.style.touchAction = 'manipulation';
+                card.style.userSelect = 'none';
+                card.style.webkitTapHighlightColor = 'transparent';
+                card.style.pointerEvents = 'auto';
+                
+                // 备用点击处理函数
+                function backupLevelClick() {
+                    console.log(`🚀 备用点击处理 - 关卡 ${levelNum}`);
+                    
+                    // 检查游戏进度
+                    let gameProgress = {};
+                    try {
+                        const saved = localStorage.getItem('planetRepairGameProgress');
+                        if (saved) {
+                            gameProgress = JSON.parse(saved);
+                        } else {
+                            gameProgress = {
+                                level1Completed: false,
+                                currentLevel: 1,
+                                unlockedLevels: [1]
+                            };
+                        }
+                    } catch (error) {
+                        console.error('读取进度失败:', error);
+                        gameProgress = {
+                            level1Completed: false,
+                            currentLevel: 1,
+                            unlockedLevels: [1]
+                        };
+                    }
+                    
+                    console.log(`📊 备用处理 - 游戏进度:`, gameProgress);
+                    
+                    const isUnlocked = gameProgress.unlockedLevels.includes(levelNum);
+                    console.log(`🔍 关卡 ${levelNum} 解锁状态: ${isUnlocked}`);
+                    
+                    if (isUnlocked) {
+                        console.log(`✅ 进入关卡 ${levelNum}`);
+                        window.location.href = `game.html?level=${levelNum}`;
+                    } else {
+                        console.log(`🔒 关卡 ${levelNum} 未解锁`);
+                        alert(`关卡 ${levelNum} 未解锁`);
+                    }
+                }
+                
+                // 添加新的触摸事件监听器
+                card.addEventListener('touchstart', function(e) {
+                    console.log(`📱 备用触摸开始 - 关卡 ${levelNum}`);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.style.transform = 'scale(0.95)';
+                }, {passive: false});
+                
+                card.addEventListener('touchend', function(e) {
+                    console.log(`📱 备用触摸结束 - 关卡 ${levelNum}`);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.style.transform = '';
+                    
+                    // 立即触发
+                    backupLevelClick();
+                }, {passive: false});
+                
+                // 也添加点击事件作为备用
+                card.addEventListener('click', function(e) {
+                    console.log(`🖱️ 备用点击 - 关卡 ${levelNum}`);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    backupLevelClick();
+                });
+                
+                console.log(`✅ 关卡 ${levelNum} 备用事件绑定完成`);
+            });
+            
+            console.log('🎯 移动端触摸修复完成！');
+        }, 1000);  // 延迟1秒确保所有初始化完成
+    </script>
+</body>
+</html>

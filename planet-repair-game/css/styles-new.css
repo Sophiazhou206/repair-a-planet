@@ -1,0 +1,115 @@
+/* 
+ * 主页面样式 - 适配750×1334设计分辨率
+ * 使用统一基础架构
+ */
+
+/* 游戏主容器已在base.css中定义，这里添加主页面特定样式 */
+
+/* 背景容器 */
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 背景图片 - 适配750×1334 */
+.background-image {
+    position: absolute;
+    width: 1128px;  /* 564 * 2 */
+    height: 2006px; /* 1003 * 2 */
+    top: -316px;    /* -158 * 2 */
+    left: -78px;    /* -39 * 2 */
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* 背景渐变遮罩 */
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(75, 18, 18, 0) 0%, rgba(55, 9, 9, 0.91) 100%);
+    z-index: 2;
+}
+
+/* Logo容器 - 适配750×1334 */
+.logo-container {
+    position: absolute;
+    top: 306px;     /* 153 * 2 */
+    left: 32px;     /* 16 * 2 */
+    z-index: 3;
+}
+
+/* 游戏Logo - 适配750×1334 */
+.game-logo {
+    width: 718px;   /* 359 * 2 */
+    height: 538px;  /* 269 * 2 */
+    animation: logoFloat 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+/* 开始游戏按钮容器 - 适配750×1334 */
+.start-button-container {
+    position: absolute;
+    top: 1312px;   /* 656 * 2 */
+    left: 210px;   /* 105 * 2 */
+    z-index: 4;
+}
+
+/* 开始游戏按钮 - 适配750×1334 */
+.start-game-btn {
+    width: 360px;   /* 180 * 2 */
+    height: 152px;  /* 76 * 2 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: buttonPulse 2s ease-in-out infinite;
+    box-shadow: 0px 16px 20px 0px #4F2F0D80;  /* 阴影也按比例放大 */
+}
+
+/* Logo浮动动画 */
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 按钮脉冲动画 */
+@keyframes buttonPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0px 16px 20px 0px #4F2F0D80;
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0px 20px 25px 0px #4F2F0DAA;
+    }
+}
+
+/* 按钮悬停效果 */
+.start-game-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 20px 25px 0px #4F2F0DAA;
+}
+
+.start-game-btn:active {
+    transform: scale(0.95);
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .start-game-btn:hover {
+        transform: none;
+    }
+    
+    .start-game-btn:active {
+        transform: scale(0.95);
+    }
+}
