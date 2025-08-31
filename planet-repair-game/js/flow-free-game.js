@@ -72,7 +72,7 @@ class FlowFreeGame {
                     { "color": 3, "a": { "r": 7, "c": 1 }, "b": { "r": 5, "c": 5 } },
                     { "color": 4, "a": { "r": 6, "c": 1 }, "b": { "r": 4, "c": 4 } }
                 ],
-                "constraints": { "timeSec": 120, "maxMoves": 180 }
+                "constraints": { "timeSec": 180, "maxMoves": 180 }
             },
             4: {
                 "id": "9x9-001",
@@ -87,7 +87,7 @@ class FlowFreeGame {
                     { "color": 6, "a": { "r": 4, "c": 6 }, "b": { "r": 6, "c": 6 } },
                     { "color": 7, "a": { "r": 7, "c": 6 }, "b": { "r": 4, "c": 8 } }
                 ],
-                "constraints": { "timeSec": 120, "maxMoves": 180 }
+                "constraints": { "timeSec": 180, "maxMoves": 180 }
             },
             5: {
                 "id": "9x9-002",
@@ -98,7 +98,7 @@ class FlowFreeGame {
                     { "color": 2, "a": { "r": 1, "c": 7 }, "b": { "r": 6, "c": 6 } },
                     { "color": 3, "a": { "r": 7, "c": 7 }, "b": { "r": 8, "c": 5 } }
                 ],
-                "constraints": { "timeSec": 120, "maxMoves": 180 }
+                "constraints": { "timeSec": 240, "maxMoves": 180 }
             },
             6: {
                 "id": "9x9-003",
@@ -110,7 +110,7 @@ class FlowFreeGame {
                     { "color": 3, "a": { "r": 0, "c": 4 }, "b": { "r": 1, "c": 8 } },
                     { "color": 4, "a": { "r": 5, "c": 4 }, "b": { "r": 0, "c": 8 } }
                 ],
-                "constraints": { "timeSec": 120, "maxMoves": 180 }
+                "constraints": { "timeSec": 240, "maxMoves": 180 }
             }
         };
         

@@ -301,7 +301,7 @@
     position: absolute;
     width: 200px;   /* 调整后的宽度 */
     height: 96px;   /* 48 * 2 */
-    right: 16px;    /* 距离顶部栏右边框8px * 2 */
+    right: 30px;    /* 调整距离顶部栏右边框15px * 2 */
     top: 16px;      /* 8 * 2 */
     
     background: #FFDEBC;
