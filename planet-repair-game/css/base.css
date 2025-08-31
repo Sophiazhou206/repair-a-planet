@@ -1,0 +1,169 @@
+/* 
+ * 移动端H5游戏统一基础架构
+ * 设计分辨率：750×1334 (iPhone 6/7/8 Plus标准)
+ * 缩放策略：contain (等比完整显示)
+ */
+
+/* 全局重置和基础配置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    /* 高DPI处理 */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    
+    /* 防止双击缩放 */
+    touch-action: manipulation;
+    
+    /* 平滑滚动 */
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #000000;
+    overflow: hidden;
+    
+    /* 禁用选择和拖拽 */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* 触摸优化 */
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    
+    /* 高DPI优化 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* 安全区域适配 */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* 统一游戏容器基础架构 */
+.game-container {
+    /* 固定设计分辨率 */
+    width: 750px;
+    height: 1334px;
+    
+    /* 容器基础样式 */
+    position: relative;
+    margin: 0 auto;
+    background-color: #252429;
+    overflow: hidden;
+    
+    /* 缩放原点设置 */
+    transform-origin: center center;
+    
+    /* 边框用于调试（生产环境可移除） */
+    /* border: 1px solid rgba(255, 255, 255, 0.1); */
+}
+
+/* Contain缩放策略实现 */
+.game-viewport {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+    z-index: -1;
+}
+
+/* 响应式缩放系统 */
+@media screen {
+    .game-container {
+        /* 基础缩放通过JavaScript动态计算 */
+        transform-origin: center center;
+    }
+}
+
+/* 高DPI设备优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    .game-container {
+        /* 高DPI设备下的优化 */
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* 横屏警告（可选） */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    .orientation-warning {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        font-size: 18px;
+        text-align: center;
+    }
+}
+
+/* 触摸设备专用优化 */
+@media (hover: none) and (pointer: coarse) {
+    .game-container {
+        /* 触摸设备下的特殊处理 */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 触摸目标最小尺寸 */
+    .clickable, .touchable, button, .btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* 极小屏幕保护 */
+@media screen and (max-width: 320px) or (max-height: 480px) {
+    .game-container {
+        /* 确保最小可用尺寸 */
+        min-width: 320px;
+        min-height: 480px;
+    }
+}
+
+/* 防止图片拖拽（全局） */
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: auto;
+    
+    /* 图片渲染优化 */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* 调试信息（开发时可启用） */
+.debug-info {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    font-size: 12px;
+    z-index: 9999;
+    border-radius: 4px;
+    font-family: monospace;
+    display: none; /* 生产环境设为 none */
+}
